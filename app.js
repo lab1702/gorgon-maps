@@ -348,6 +348,12 @@ function setupLightbox(cy, zones) {
 
     headerH2.textContent = zoneName;
     levelsSpan.textContent = `Levels: ${zone.levels}`;
+
+    // Hide old image immediately to prevent flash of previous map
+    img.style.visibility = 'hidden';
+    img.onload = function () {
+      img.style.visibility = '';
+    };
     img.src = `maps/${zone.map_file}`;
     img.alt = `Map of ${zoneName}`;
 
