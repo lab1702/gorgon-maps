@@ -178,8 +178,10 @@ const graphStyle = [
 
 /**
  * Set up click-to-highlight interaction.
+ * @param {object} cy - Cytoscape instance
+ * @param {function} [openLightbox] - Optional callback to open lightbox for a zone
  */
-function setupHighlighting(cy) {
+function setupHighlighting(cy, openLightbox) {
   cy.on('tap', 'node', function (e) {
     const node = e.target;
 
@@ -197,6 +199,11 @@ function setupHighlighting(cy) {
 
     // Dim everything else
     cy.elements().not(node).not(node.neighborhood().nodes()).not(node.connectedEdges()).addClass('dimmed');
+
+    // Open lightbox if the node has a map
+    if (node.data('hasMap') && openLightbox) {
+      openLightbox(node.data('id'));
+    }
   });
 
   cy.on('tap', function (e) {
@@ -261,6 +268,220 @@ function setupTooltip(cy) {
 }
 
 /**
+ * Set up lightbox for viewing zone maps with zoom/pan and neighbor navigation.
+ * Returns an openLightbox(zoneName) function for use by other handlers.
+ */
+function setupLightbox(cy, zones) {
+  const lightbox = document.getElementById('lightbox');
+  const headerH2 = lightbox.querySelector('.lightbox-header h2');
+  const levelsSpan = lightbox.querySelector('.lightbox-header .levels');
+  const closeBtn = lightbox.querySelector('.close-btn');
+  const body = lightbox.querySelector('.lightbox-body');
+  const img = body.querySelector('img');
+  const prevBtn = lightbox.querySelector('.lightbox-nav .prev');
+  const nextBtn = lightbox.querySelector('.lightbox-nav .next');
+  const navLabel = lightbox.querySelector('.lightbox-nav .nav-label');
+
+  // Zoom/pan state
+  let scale = 1;
+  let translateX = 0;
+  let translateY = 0;
+  let dragging = false;
+  let lastX = 0;
+  let lastY = 0;
+
+  // Navigation state
+  let currentZoneName = null;
+  let navigableNeighbors = []; // connected zones with maps, sorted alphabetically
+  let neighborIndex = -1;
+
+  function applyTransform() {
+    img.style.transform = `scale(${scale}) translate(${translateX}px, ${translateY}px)`;
+  }
+
+  function resetTransform() {
+    scale = 1;
+    translateX = 0;
+    translateY = 0;
+    applyTransform();
+  }
+
+  /**
+   * Compute the list of navigable connected zones (those with map files),
+   * sorted alphabetically.
+   */
+  function computeNavigableNeighbors(zoneName) {
+    const zone = zones[zoneName];
+    if (!zone) return [];
+    return zone.connections
+      .filter(name => zones[name] && zones[name].map_file)
+      .sort();
+  }
+
+  function updateNavButtons() {
+    if (navigableNeighbors.length === 0) {
+      prevBtn.disabled = true;
+      nextBtn.disabled = true;
+      prevBtn.textContent = '\u2190 Prev';
+      nextBtn.textContent = 'Next \u2192';
+      navLabel.textContent = '';
+    } else {
+      // neighborIndex === -1 means we're at the origin zone, not yet navigated
+      prevBtn.disabled = (neighborIndex <= 0);
+      nextBtn.disabled = (neighborIndex >= navigableNeighbors.length - 1);
+
+      // Show target zone name on each button
+      if (neighborIndex <= 0) {
+        prevBtn.textContent = '\u2190 Prev';
+      } else {
+        prevBtn.textContent = `\u2190 ${navigableNeighbors[neighborIndex - 1]}`;
+      }
+
+      if (neighborIndex === -1 && navigableNeighbors.length > 0) {
+        // Haven't navigated yet; next goes to first neighbor
+        nextBtn.disabled = false;
+        nextBtn.textContent = `${navigableNeighbors[0]} \u2192`;
+      } else if (neighborIndex < navigableNeighbors.length - 1) {
+        nextBtn.textContent = `${navigableNeighbors[neighborIndex + 1]} \u2192`;
+      } else {
+        nextBtn.textContent = 'Next \u2192';
+      }
+
+      navLabel.textContent = currentZoneName;
+    }
+  }
+
+  /**
+   * Open the lightbox for a given zone name.
+   */
+  function openLightbox(zoneName) {
+    const zone = zones[zoneName];
+    if (!zone || !zone.map_file) return;
+
+    currentZoneName = zoneName;
+    headerH2.textContent = zoneName;
+    levelsSpan.textContent = `Levels: ${zone.levels}`;
+    img.src = `maps/${zone.map_file}`;
+    img.alt = `Map of ${zoneName}`;
+
+    resetTransform();
+
+    // Compute navigable neighbors for this zone and reset navigation index.
+    // neighborIndex = -1 means "at the opened zone"; first Next click goes to index 0.
+    navigableNeighbors = computeNavigableNeighbors(zoneName);
+    neighborIndex = -1;
+    updateNavButtons();
+
+    lightbox.classList.add('open');
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+  }
+
+  /**
+   * Navigate to a neighbor zone by index in the navigableNeighbors array.
+   */
+  function navigateToNeighbor(index) {
+    if (index < 0 || index >= navigableNeighbors.length) return;
+    const targetName = navigableNeighbors[index];
+    const targetZone = zones[targetName];
+    if (!targetZone || !targetZone.map_file) return;
+
+    currentZoneName = targetName;
+    headerH2.textContent = targetName;
+    levelsSpan.textContent = `Levels: ${targetZone.levels}`;
+    img.src = `maps/${targetZone.map_file}`;
+    img.alt = `Map of ${targetName}`;
+
+    resetTransform();
+
+    // Recompute navigable neighbors for the new zone
+    navigableNeighbors = computeNavigableNeighbors(targetName);
+    neighborIndex = -1; // reset: at the new zone's origin
+    updateNavButtons();
+  }
+
+  // --- Close handlers ---
+
+  closeBtn.addEventListener('click', closeLightbox);
+
+  lightbox.addEventListener('click', function (e) {
+    // Close on backdrop click (click directly on #lightbox, not its children)
+    if (e.target === lightbox) {
+      closeLightbox();
+    }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && lightbox.classList.contains('open')) {
+      closeLightbox();
+    }
+  });
+
+  // --- Mouse wheel zoom ---
+
+  body.addEventListener('wheel', function (e) {
+    e.preventDefault();
+    const factor = e.deltaY < 0 ? 1.15 : 0.87;
+    scale *= factor;
+    // Clamp between 0.5 and 8
+    scale = Math.max(0.5, Math.min(8, scale));
+    applyTransform();
+  }, { passive: false });
+
+  // --- Click-drag pan ---
+
+  body.addEventListener('mousedown', function (e) {
+    // Only handle left mouse button
+    if (e.button !== 0) return;
+    dragging = true;
+    lastX = e.clientX;
+    lastY = e.clientY;
+    body.classList.add('dragging');
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', function (e) {
+    if (!dragging) return;
+    const dx = e.clientX - lastX;
+    const dy = e.clientY - lastY;
+    lastX = e.clientX;
+    lastY = e.clientY;
+    // Divide by scale so panning feels consistent at any zoom level
+    translateX += dx / scale;
+    translateY += dy / scale;
+    applyTransform();
+  });
+
+  document.addEventListener('mouseup', function () {
+    if (!dragging) return;
+    dragging = false;
+    body.classList.remove('dragging');
+  });
+
+  // --- Prev/Next navigation ---
+
+  prevBtn.addEventListener('click', function () {
+    if (neighborIndex > 0) {
+      navigateToNeighbor(neighborIndex - 1);
+    } else if (neighborIndex === -1) {
+      // Already at start, do nothing (button should be disabled)
+    }
+  });
+
+  nextBtn.addEventListener('click', function () {
+    if (neighborIndex === -1 && navigableNeighbors.length > 0) {
+      navigateToNeighbor(0);
+    } else if (neighborIndex < navigableNeighbors.length - 1) {
+      navigateToNeighbor(neighborIndex + 1);
+    }
+  });
+
+  return openLightbox;
+}
+
+/**
  * Main initialization: fetch data, build graph, attach interactions.
  */
 async function init() {
@@ -288,7 +509,8 @@ async function init() {
     }
   });
 
-  setupHighlighting(cy);
+  const openLightbox = setupLightbox(cy, zones);
+  setupHighlighting(cy, openLightbox);
   setupTooltip(cy);
 }
 
