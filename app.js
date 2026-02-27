@@ -460,8 +460,7 @@ function setupLightbox(cy, zones) {
 
   body.addEventListener('wheel', function (e) {
     e.preventDefault();
-    const factor = e.deltaY < 0 ? 1.15 : 0.87;
-    scale *= factor;
+    scale *= Math.pow(0.99, e.deltaY);
     // Clamp between 0.5 and 8
     scale = Math.max(0.5, Math.min(8, scale));
     applyTransform();
@@ -587,7 +586,7 @@ async function init() {
     style: graphStyle,
     minZoom: 0.3,
     maxZoom: 3,
-    wheelSensitivity: 0.3,
+    wheelSensitivity: 3,
     layout: { name: 'preset' } // start with no layout; run dagre after registering listeners
   });
 
