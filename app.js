@@ -228,7 +228,7 @@ function setupTooltip(cy) {
       `<strong>${name}</strong><br>` +
       `Levels: ${levels}<br>` +
       `${connectionCount} connection${connectionCount !== 1 ? 's' : ''}` +
-      (hasMap ? '<br><em>Click to view map</em>' : '');
+      (hasMap ? '<br><em>Double-click to view map</em>' : '');
 
     // Position near the node
     const pos = node.renderedPosition();
