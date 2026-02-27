@@ -114,9 +114,13 @@ body {
 
 .lightbox-loading {
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   color: #aaa;
   font-size: 18px;
   display: none;
+  z-index: 1;
 }
 
 .lightbox-loading.visible {
