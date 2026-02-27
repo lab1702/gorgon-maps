@@ -182,25 +182,23 @@ const graphStyle = [
  * @param {function} [openLightbox] - Optional callback to open lightbox for a zone
  */
 function setupHighlighting(cy, openLightbox) {
-  cy.on('tap', 'node', function (e) {
-    const node = e.target;
-
-    // Clear all classes first
+  function highlightNode(node) {
     cy.elements().removeClass('highlighted neighbor dimmed');
-
-    // Highlight tapped node
     node.addClass('highlighted');
-
-    // Highlight neighbors
     node.neighborhood().nodes().addClass('neighbor');
-
-    // Highlight connected edges
     node.connectedEdges().addClass('highlighted');
-
-    // Dim everything else
     cy.elements().not(node).not(node.neighborhood().nodes()).not(node.connectedEdges()).addClass('dimmed');
+  }
 
-    // Open lightbox if the node has a map
+  // Single click: highlight only
+  cy.on('tap', 'node', function (e) {
+    highlightNode(e.target);
+  });
+
+  // Double click: highlight + open lightbox
+  cy.on('dbltap', 'node', function (e) {
+    const node = e.target;
+    highlightNode(node);
     if (node.data('hasMap') && openLightbox) {
       openLightbox(node.data('id'));
     }
