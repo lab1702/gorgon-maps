@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project Gorgon Map Viewer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/cytoscape@3/dist/cytoscape.min.js"></script>
+  <script src="https://unpkg.com/dagre@0.8/dist/dagre.min.js"></script>
+  <script src="https://unpkg.com/cytoscape-dagre@2/cytoscape-dagre.js"></script>
+</head>
+<body>
+  <div id="cy"></div>
+
+  <div id="lightbox">
+    <div class="lightbox-header">
+      <h2></h2>
+      <span class="levels"></span>
+      <button class="close-btn">&times;</button>
+    </div>
+    <div class="lightbox-body">
+      <img src="" alt="">
+    </div>
+    <div class="lightbox-nav">
+      <button class="prev">&#8592; Prev</button>
+      <span class="nav-label"></span>
+      <button class="next">Next &#8594;</button>
+    </div>
+  </div>
+
+  <div id="tooltip"></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+#cy {
+  width: 100vw;
+  height: 100vh;
+}
+
+#tooltip {
+  position: absolute;
+  background: rgba(20, 20, 40, 0.95);
+  border: 1px solid #3a3a5c;
+  border-radius: 8px;
+  padding: 10px 14px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 100;
+  max-width: 220px;
+  font-size: 13px;
+}
+
+#tooltip.visible {
+  opacity: 1;
+}
+
+#lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: none;
+  z-index: 200;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#lightbox.open {
+  display: flex;
+}
+
+.lightbox-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.lightbox-header h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #f0f0f0;
+}
+
+.lightbox-header .levels {
+  color: #aaa;
+  font-size: 14px;
+}
+
+.lightbox-header .close-btn {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 28px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.lightbox-header .close-btn:hover {
+  color: #fff;
+}
+
+.lightbox-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  cursor: grab;
+}
+
+.lightbox-body.dragging {
+  cursor: grabbing;
+}
+
+.lightbox-body img {
+  max-width: 90vw;
+  max-height: 75vh;
+  object-fit: contain;
+  transform-origin: center center;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.lightbox-nav {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  align-items: center;
+}
+
+.lightbox-nav button {
+  background: #2a2a4a;
+  border: 1px solid #4a4a6a;
+  color: #e0e0e0;
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.lightbox-nav button:hover {
+  background: #3a3a5a;
+}
+
+.lightbox-nav button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
