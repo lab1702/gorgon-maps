@@ -343,7 +343,7 @@
     "connections": [
       "Gazluk"
     ],
-    "map_file": null,
+    "map_file": "Map_SnowbloodCave.png",
     "type": "dungeon",
     "levels": "70-75"
   },
@@ -485,7 +485,7 @@
       "Gazluk",
       "Fae Realm"
     ],
-    "map_file": null,
+    "map_file": "Map_TowerView.png",
     "type": "dungeon",
     "levels": "70-75"
   },

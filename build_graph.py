@@ -131,7 +131,9 @@ zone_to_map = {
     "Sacred Grotto": "Map_SnowbloodCave.png",
     "Statehelm Safehouse": "Map_StatehelmCaves_SafeHouseA.png",
     "Anagoge Records Facility": "Map_NewbieIslandDungeon.png",
+    "Amaluk Valley Cave": "Map_TowerView.png",
     "Gazluk Keep": "FortGazluk1.png",
+    "Gazluk Shadow Cave": "Map_SnowbloodCave.png",
     "War Caches": "Map_WarCache_Drug-1.png",
 }
 
