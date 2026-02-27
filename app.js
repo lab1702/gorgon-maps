@@ -420,12 +420,18 @@ function setupLightbox(cy, zones) {
   });
 
   document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      if (lightbox.classList.contains('open')) {
+        closeLightbox();
+      } else {
+        cy.elements().removeClass('highlighted neighbor dimmed');
+      }
+      return;
+    }
+
     if (!lightbox.classList.contains('open')) return;
 
     switch (e.key) {
-      case 'Escape':
-        closeLightbox();
-        break;
       case 'ArrowLeft':
         e.preventDefault();
         if (neighborIndex > 0) {
