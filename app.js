@@ -189,6 +189,7 @@ function setupHighlighting(cy, openLightbox) {
   function updateHighlighting() {
     const selected = cy.nodes('.highlighted');
     cy.elements().removeClass('neighbor dimmed');
+    cy.edges().removeClass('highlighted');
 
     if (selected.length === 0) return;
 
