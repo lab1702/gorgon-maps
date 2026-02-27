@@ -161,7 +161,7 @@ const graphStyle = [
   {
     selector: 'node.dimmed',
     style: {
-      'opacity': 0.2
+      'opacity': 0.35
     }
   },
   {
@@ -175,7 +175,7 @@ const graphStyle = [
   {
     selector: 'edge.dimmed',
     style: {
-      'opacity': 0.15
+      'opacity': 0.25
     }
   }
 ];
