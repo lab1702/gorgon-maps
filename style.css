@@ -100,8 +100,8 @@ body {
 }
 
 .lightbox-body img {
-  max-width: 90vw;
-  max-height: 75vh;
+  max-width: 95vw;
+  max-height: 88vh;
   object-fit: contain;
   transform-origin: center center;
   user-select: none;
