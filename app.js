@@ -498,7 +498,7 @@ function setupLightbox(cy, zones) {
 
   body.addEventListener('wheel', function (e) {
     e.preventDefault();
-    scale *= Math.pow(0.99, e.deltaY);
+    scale *= Math.pow(0.997, e.deltaY);
     // Clamp between 0.5 and 8
     scale = Math.max(0.5, Math.min(8, scale));
     applyTransform();

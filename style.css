@@ -65,8 +65,13 @@ body {
   font-size: 14px;
 }
 
-.lightbox-header .close-btn {
+.lightbox-header .close-hint {
   margin-left: auto;
+  font-size: 11px;
+  color: #666;
+}
+
+.lightbox-header .close-btn {
   background: none;
   border: none;
   color: #888;
