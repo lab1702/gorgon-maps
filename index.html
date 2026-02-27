@@ -10,7 +10,24 @@
   <script src="https://unpkg.com/cytoscape-dagre@2/cytoscape-dagre.js"></script>
 </head>
 <body>
-  <div id="cy"></div>
+  <div id="cy">
+    <div id="loading">Loading...</div>
+  </div>
+
+  <div id="legend">
+    <div class="legend-title">Legend</div>
+    <div class="legend-item"><span class="legend-circle" style="background:#4a9e4a"></span> Levels 1-10</div>
+    <div class="legend-item"><span class="legend-circle" style="background:#5ab35a"></span> Levels 11-25</div>
+    <div class="legend-item"><span class="legend-circle" style="background:#c4a83c"></span> Levels 26-40</div>
+    <div class="legend-item"><span class="legend-circle" style="background:#d4853c"></span> Levels 41-60</div>
+    <div class="legend-item"><span class="legend-circle" style="background:#c45a5a"></span> Levels 61-75</div>
+    <div class="legend-item"><span class="legend-circle" style="background:#8a5ab3"></span> Levels 76+</div>
+    <div class="legend-separator"></div>
+    <div class="legend-item"><span class="legend-shape legend-circle-shape"></span> Overworld</div>
+    <div class="legend-item"><span class="legend-shape legend-square-shape"></span> Dungeon</div>
+    <div class="legend-separator"></div>
+    <div class="legend-hint">Click zone to view map</div>
+  </div>
 
   <div id="lightbox">
     <div class="lightbox-header">

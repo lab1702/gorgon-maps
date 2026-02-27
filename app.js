@@ -373,10 +373,15 @@ function setupLightbox(cy, zones) {
     updateNavButtons();
 
     lightbox.classList.add('open');
+
+    // Update URL hash for shareable links
+    location.hash = encodeURIComponent(zoneName);
   }
 
   function closeLightbox() {
     lightbox.classList.remove('open');
+    // Clear URL hash when closing
+    history.replaceState(null, '', location.pathname + location.search);
   }
 
   /**
@@ -400,6 +405,9 @@ function setupLightbox(cy, zones) {
     navigableNeighbors = computeNavigableNeighbors(targetName);
     neighborIndex = -1; // reset: at the new zone's origin
     updateNavButtons();
+
+    // Update URL hash for shareable links
+    location.hash = encodeURIComponent(targetName);
   }
 
   // --- Close handlers ---
@@ -414,8 +422,37 @@ function setupLightbox(cy, zones) {
   });
 
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && lightbox.classList.contains('open')) {
-      closeLightbox();
+    if (!lightbox.classList.contains('open')) return;
+
+    switch (e.key) {
+      case 'Escape':
+        closeLightbox();
+        break;
+      case 'ArrowLeft':
+        e.preventDefault();
+        if (neighborIndex > 0) {
+          navigateToNeighbor(neighborIndex - 1);
+        }
+        break;
+      case 'ArrowRight':
+        e.preventDefault();
+        if (neighborIndex === -1 && navigableNeighbors.length > 0) {
+          navigateToNeighbor(0);
+        } else if (neighborIndex < navigableNeighbors.length - 1) {
+          navigateToNeighbor(neighborIndex + 1);
+        }
+        break;
+      case '+':
+      case '=':
+        e.preventDefault();
+        scale = Math.min(8, scale * 1.15);
+        applyTransform();
+        break;
+      case '-':
+        e.preventDefault();
+        scale = Math.max(0.5, scale * 0.87);
+        applyTransform();
+        break;
     }
   });
 
@@ -458,6 +495,61 @@ function setupLightbox(cy, zones) {
     if (!dragging) return;
     dragging = false;
     body.classList.remove('dragging');
+  });
+
+  // --- Touch support (single-finger drag + pinch-to-zoom) ---
+
+  let touchStartDist = 0;
+  let touchStartScale = 1;
+  let lastTouchX = 0;
+  let lastTouchY = 0;
+  let isTouchDragging = false;
+
+  function getTouchDistance(touches) {
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  body.addEventListener('touchstart', function (e) {
+    if (e.touches.length === 2) {
+      // Pinch-to-zoom start
+      e.preventDefault();
+      touchStartDist = getTouchDistance(e.touches);
+      touchStartScale = scale;
+      isTouchDragging = false;
+    } else if (e.touches.length === 1) {
+      // Single-finger drag start
+      isTouchDragging = true;
+      lastTouchX = e.touches[0].clientX;
+      lastTouchY = e.touches[0].clientY;
+    }
+  }, { passive: false });
+
+  body.addEventListener('touchmove', function (e) {
+    if (e.touches.length === 2) {
+      // Pinch-to-zoom
+      e.preventDefault();
+      const currentDist = getTouchDistance(e.touches);
+      const ratio = currentDist / touchStartDist;
+      scale = Math.max(0.5, Math.min(8, touchStartScale * ratio));
+      applyTransform();
+      isTouchDragging = false;
+    } else if (e.touches.length === 1 && isTouchDragging) {
+      // Single-finger drag
+      e.preventDefault();
+      const dx = e.touches[0].clientX - lastTouchX;
+      const dy = e.touches[0].clientY - lastTouchY;
+      lastTouchX = e.touches[0].clientX;
+      lastTouchY = e.touches[0].clientY;
+      translateX += dx / scale;
+      translateY += dy / scale;
+      applyTransform();
+    }
+  }, { passive: false });
+
+  body.addEventListener('touchend', function () {
+    isTouchDragging = false;
   });
 
   // --- Prev/Next navigation ---
@@ -509,9 +601,44 @@ async function init() {
     }
   });
 
+  // Remove loading indicator once layout finishes
+  cy.on('layoutstop', function () {
+    const loadingEl = document.getElementById('loading');
+    if (loadingEl) {
+      loadingEl.remove();
+    }
+  });
+
   const openLightbox = setupLightbox(cy, zones);
   setupHighlighting(cy, openLightbox);
   setupTooltip(cy);
+
+  // URL hash navigation: open zone from hash on startup
+  if (location.hash) {
+    const zoneName = decodeURIComponent(location.hash.slice(1));
+    if (zoneName && zones[zoneName]) {
+      // Wait for layout to finish before acting on the hash
+      cy.one('layoutstop', function () {
+        const node = cy.getElementById(zoneName);
+        if (node && node.length > 0) {
+          // Highlight the node
+          cy.elements().removeClass('highlighted neighbor dimmed');
+          node.addClass('highlighted');
+          node.neighborhood().nodes().addClass('neighbor');
+          node.connectedEdges().addClass('highlighted');
+          cy.elements().not(node).not(node.neighborhood().nodes()).not(node.connectedEdges()).addClass('dimmed');
+
+          // Center on the node
+          cy.animate({ center: { eles: node }, duration: 300 });
+
+          // Open lightbox if it has a map
+          if (node.data('hasMap')) {
+            openLightbox(zoneName);
+          }
+        }
+      });
+    }
+  }
 }
 
 init();

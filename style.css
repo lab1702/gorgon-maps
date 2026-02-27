@@ -9,6 +9,7 @@ body {
 #cy {
   width: 100vw;
   height: 100vh;
+  position: relative;
 }
 
 #tooltip {
@@ -126,4 +127,116 @@ body {
 .lightbox-nav button:disabled {
   opacity: 0.3;
   cursor: default;
+}
+
+/* Loading indicator */
+#loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  color: #aaa;
+  z-index: 50;
+  pointer-events: none;
+}
+
+/* Legend */
+#legend {
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  background: rgba(20, 20, 40, 0.85);
+  border: 1px solid #3a3a5c;
+  border-radius: 8px;
+  padding: 12px 16px;
+  z-index: 90;
+  font-size: 12px;
+  line-height: 1.6;
+  min-width: 140px;
+}
+
+.legend-title {
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: #d0d0d0;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #bbb;
+}
+
+.legend-circle {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legend-shape {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  border: 2px solid #888;
+  box-sizing: border-box;
+}
+
+.legend-circle-shape {
+  border-radius: 50%;
+}
+
+.legend-square-shape {
+  border-radius: 3px;
+}
+
+.legend-separator {
+  border-top: 1px solid #3a3a5c;
+  margin: 6px 0;
+}
+
+.legend-hint {
+  color: #888;
+  font-style: italic;
+  font-size: 11px;
+}
+
+/* Responsive styles for small screens */
+@media (max-width: 767px) {
+  .lightbox-nav button {
+    min-height: 48px;
+    min-width: 48px;
+    padding: 10px 16px;
+    font-size: 15px;
+  }
+
+  .lightbox-body img {
+    max-width: 95vw;
+    max-height: 85vh;
+  }
+
+  .lightbox-header h2 {
+    font-size: 18px;
+  }
+
+  .lightbox-header {
+    padding: 10px 16px;
+  }
+
+  #legend {
+    font-size: 11px;
+    padding: 8px 12px;
+    bottom: 8px;
+    left: 8px;
+    min-width: 120px;
+  }
+
+  .legend-title {
+    font-size: 12px;
+  }
 }
