@@ -144,7 +144,7 @@ body {
 /* Legend */
 #legend {
   position: fixed;
-  bottom: 16px;
+  top: 16px;
   left: 16px;
   background: rgba(20, 20, 40, 0.85);
   border: 1px solid #3a3a5c;
@@ -231,7 +231,7 @@ body {
   #legend {
     font-size: 11px;
     padding: 8px 12px;
-    bottom: 8px;
+    top: 8px;
     left: 8px;
     min-width: 120px;
   }
