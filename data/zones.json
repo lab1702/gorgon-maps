@@ -12,7 +12,8 @@
       "Eltibule",
       "Sun Vale",
       "Serbule Hills",
-      "Anagoge Island"
+      "Anagoge Island",
+      "Phantom Ilmari Desert"
     ],
     "map_file": "Map_AreaSerbule.png",
     "type": "overworld",
@@ -96,6 +97,7 @@
   },
   "Fae Realm": {
     "connections": [
+      "Sun Vale",
       "Winter Nexus"
     ],
     "map_file": "Map_AreaFaeRealm1.png",

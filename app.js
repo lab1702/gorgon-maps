@@ -258,11 +258,21 @@ function setupTooltip(cy) {
     const hasMap = node.data('hasMap');
     const connectionCount = node.connectedEdges().length;
 
-    tooltip.innerHTML =
-      `<strong>${name}</strong><br>` +
-      `Levels: ${levels}<br>` +
-      `${connectionCount} connection${connectionCount !== 1 ? 's' : ''}` +
-      (hasMap ? '<br><em>Double-click to view map</em>' : '');
+    const strong = document.createElement('strong');
+    strong.textContent = name;
+    tooltip.replaceChildren(
+      strong,
+      document.createElement('br'),
+      document.createTextNode(`Levels: ${levels}`),
+      document.createElement('br'),
+      document.createTextNode(`${connectionCount} connection${connectionCount !== 1 ? 's' : ''}`)
+    );
+    if (hasMap) {
+      const em = document.createElement('em');
+      em.textContent = 'Double-click to view map';
+      tooltip.appendChild(document.createElement('br'));
+      tooltip.appendChild(em);
+    }
 
     // Position near the node
     const pos = node.renderedPosition();
@@ -495,8 +505,22 @@ function setupLightbox(cy, zones) {
  * Main initialization: fetch data, build graph, attach interactions.
  */
 async function init() {
-  const response = await fetch('data/zones.json');
-  const zones = await response.json();
+  let zones;
+  try {
+    const response = await fetch('data/zones.json');
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+    zones = await response.json();
+  } catch (err) {
+    const loadingEl = document.getElementById('loading');
+    if (loadingEl) {
+      loadingEl.textContent = 'Failed to load zone data. Try refreshing the page.';
+      loadingEl.style.color = '#c45a5a';
+    }
+    console.error('Failed to load zone data:', err);
+    return;
+  }
   const elements = buildElements(zones);
 
   const cy = cytoscape({
@@ -509,13 +533,36 @@ async function init() {
     layout: { name: 'preset' } // start with no layout; run dagre after registering listeners
   });
 
-  // Remove loading indicator once layout finishes
-  cy.on('layoutstop', function () {
+  const openLightbox = setupLightbox(cy, zones);
+  setupHighlighting(cy, openLightbox);
+  setupTooltip(cy);
+
+  // Remove loading indicator and handle URL hash navigation once layout finishes
+  cy.one('layoutstop', function () {
     const loadingEl = document.getElementById('loading');
     if (loadingEl) {
       loadingEl.remove();
     }
     cy.fit(undefined, 40);
+
+    // URL hash navigation: open zone from hash on startup
+    if (location.hash) {
+      const zoneName = decodeURIComponent(location.hash.slice(1));
+      if (zoneName && zones[zoneName]) {
+        const node = cy.getElementById(zoneName);
+        if (node && node.length > 0) {
+          cy.elements().removeClass('highlighted neighbor dimmed');
+          node.addClass('highlighted');
+          node.neighborhood().nodes().addClass('neighbor');
+          node.connectedEdges().addClass('highlighted');
+          cy.elements().not(node).not(node.neighborhood().nodes()).not(node.connectedEdges()).addClass('dimmed');
+          cy.animate({ center: { eles: node }, duration: 300 });
+          if (node.data('hasMap')) {
+            openLightbox(zoneName);
+          }
+        }
+      }
+    }
   });
 
   // Run dagre layout now that the layoutstop listener is registered
@@ -530,37 +577,6 @@ async function init() {
       return (a.data('rank') || 0) - (b.data('rank') || 0);
     }
   }).run();
-
-  const openLightbox = setupLightbox(cy, zones);
-  setupHighlighting(cy, openLightbox);
-  setupTooltip(cy);
-
-  // URL hash navigation: open zone from hash on startup
-  if (location.hash) {
-    const zoneName = decodeURIComponent(location.hash.slice(1));
-    if (zoneName && zones[zoneName]) {
-      // Wait for layout to finish before acting on the hash
-      cy.one('layoutstop', function () {
-        const node = cy.getElementById(zoneName);
-        if (node && node.length > 0) {
-          // Highlight the node
-          cy.elements().removeClass('highlighted neighbor dimmed');
-          node.addClass('highlighted');
-          node.neighborhood().nodes().addClass('neighbor');
-          node.connectedEdges().addClass('highlighted');
-          cy.elements().not(node).not(node.neighborhood().nodes()).not(node.connectedEdges()).addClass('dimmed');
-
-          // Center on the node
-          cy.animate({ center: { eles: node }, duration: 300 });
-
-          // Open lightbox if it has a map
-          if (node.data('hasMap')) {
-            openLightbox(zoneName);
-          }
-        }
-      });
-    }
-  }
 }
 
 init();
