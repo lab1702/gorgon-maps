@@ -182,23 +182,53 @@ const graphStyle = [
  * @param {function} [openLightbox] - Optional callback to open lightbox for a zone
  */
 function setupHighlighting(cy, openLightbox) {
-  function highlightNode(node) {
-    cy.elements().removeClass('highlighted neighbor dimmed');
-    node.addClass('highlighted');
-    node.neighborhood().nodes().addClass('neighbor');
-    node.connectedEdges().addClass('highlighted');
-    cy.elements().not(node).not(node.neighborhood().nodes()).not(node.connectedEdges()).addClass('dimmed');
+  function updateHighlighting() {
+    const selected = cy.nodes('.highlighted');
+    cy.elements().removeClass('neighbor dimmed');
+
+    if (selected.length === 0) return;
+
+    // Collect all neighbors and connected edges of selected nodes
+    let neighbors = cy.collection();
+    let connectedEdges = cy.collection();
+    selected.forEach(function (node) {
+      neighbors = neighbors.union(node.neighborhood().nodes());
+      connectedEdges = connectedEdges.union(node.connectedEdges());
+    });
+
+    // Also highlight edges between selected nodes
+    const interEdges = selected.edgesWith(selected);
+    connectedEdges = connectedEdges.union(interEdges);
+
+    neighbors.not(selected).addClass('neighbor');
+    connectedEdges.addClass('highlighted');
+    cy.elements().not(selected).not(neighbors).not(connectedEdges).addClass('dimmed');
   }
 
-  // Single click: highlight only
+  // Single click: highlight only (Ctrl+click to add to selection)
   cy.on('tap', 'node', function (e) {
-    highlightNode(e.target);
+    const node = e.target;
+    if (e.originalEvent.ctrlKey || e.originalEvent.metaKey) {
+      // Toggle this node's selection
+      if (node.hasClass('highlighted')) {
+        node.removeClass('highlighted');
+      } else {
+        node.addClass('highlighted');
+      }
+    } else {
+      // Replace selection
+      cy.elements().removeClass('highlighted neighbor dimmed');
+      node.addClass('highlighted');
+    }
+    updateHighlighting();
   });
 
   // Double click: highlight + open lightbox
   cy.on('dbltap', 'node', function (e) {
     const node = e.target;
-    highlightNode(node);
+    cy.elements().removeClass('highlighted neighbor dimmed');
+    node.addClass('highlighted');
+    updateHighlighting();
     if (node.data('hasMap') && openLightbox) {
       openLightbox(node.data('id'));
     }
