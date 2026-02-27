@@ -588,17 +588,7 @@ async function init() {
     minZoom: 0.3,
     maxZoom: 3,
     wheelSensitivity: 0.3,
-    layout: {
-      name: 'dagre',
-      rankDir: 'TB',
-      nodeSep: 60,
-      rankSep: 80,
-      edgeSep: 20,
-      // Sort nodes by level rank tier so lower-level zones appear higher
-      sort: function (a, b) {
-        return (a.data('rank') || 0) - (b.data('rank') || 0);
-      }
-    }
+    layout: { name: 'preset' } // start with no layout; run dagre after registering listeners
   });
 
   // Remove loading indicator once layout finishes
@@ -608,6 +598,18 @@ async function init() {
       loadingEl.remove();
     }
   });
+
+  // Run dagre layout now that the layoutstop listener is registered
+  cy.layout({
+    name: 'dagre',
+    rankDir: 'TB',
+    nodeSep: 60,
+    rankSep: 80,
+    edgeSep: 20,
+    sort: function (a, b) {
+      return (a.data('rank') || 0) - (b.data('rank') || 0);
+    }
+  }).run();
 
   const openLightbox = setupLightbox(cy, zones);
   setupHighlighting(cy, openLightbox);
