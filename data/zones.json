@@ -146,7 +146,7 @@
       "Anagoge Island",
       "Serbule Hills Spider Cave"
     ],
-    "map_file": null,
+    "map_file": "Map_NewbieIslandDungeon.png",
     "type": "dungeon",
     "levels": "1-10"
   },
@@ -267,7 +267,7 @@
     "connections": [
       "Serbule Hills"
     ],
-    "map_file": null,
+    "map_file": "Map_RanalonBase.png",
     "type": "dungeon",
     "levels": "1-25"
   },
@@ -294,7 +294,7 @@
       "Anagoge Records Facility",
       "Serbule Hills"
     ],
-    "map_file": null,
+    "map_file": "Map_SpiderCave.png",
     "type": "dungeon",
     "levels": "1-25"
   },
@@ -335,7 +335,7 @@
     "connections": [
       "Gazluk"
     ],
-    "map_file": null,
+    "map_file": "FortGazluk1.png",
     "type": "dungeon",
     "levels": "70-75"
   },
@@ -392,7 +392,7 @@
     "connections": [
       "Ilmari"
     ],
-    "map_file": null,
+    "map_file": "Map_WarCache_Drug-1.png",
     "type": "dungeon",
     "levels": "45-60"
   },

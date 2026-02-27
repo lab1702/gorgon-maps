@@ -234,7 +234,7 @@ function setupHighlighting(cy, openLightbox) {
     cy.elements().removeClass('highlighted neighbor dimmed');
     node.addClass('highlighted');
     updateHighlighting();
-    if (node.data('hasMap') && openLightbox) {
+    if (openLightbox) {
       openLightbox(node.data('id'));
     }
   });
@@ -268,12 +268,10 @@ function setupTooltip(cy) {
       document.createElement('br'),
       document.createTextNode(`${connectionCount} connection${connectionCount !== 1 ? 's' : ''}`)
     );
-    if (hasMap) {
-      const em = document.createElement('em');
-      em.textContent = 'Double-click to view map';
-      tooltip.appendChild(document.createElement('br'));
-      tooltip.appendChild(em);
-    }
+    const em = document.createElement('em');
+    em.textContent = hasMap ? 'Double-click to view map' : 'Double-click for details';
+    tooltip.appendChild(document.createElement('br'));
+    tooltip.appendChild(em);
 
     // Position near the node
     const pos = node.renderedPosition();
@@ -346,20 +344,29 @@ function setupLightbox(cy, zones) {
    */
   function openLightbox(zoneName) {
     const zone = zones[zoneName];
-    if (!zone || !zone.map_file) return;
+    if (!zone) return;
 
     headerH2.textContent = zoneName;
     levelsSpan.textContent = `Levels: ${zone.levels}`;
 
-    // Hide old image and show loading message until new map loads
-    img.style.visibility = 'hidden';
-    loadingMsg.classList.add('visible');
-    img.onload = function () {
-      loadingMsg.classList.remove('visible');
-      img.style.visibility = '';
-    };
-    img.src = `maps/${zone.map_file}`;
-    img.alt = `Map of ${zoneName}`;
+    if (zone.map_file) {
+      // Show map image
+      img.style.display = '';
+      img.style.visibility = 'hidden';
+      loadingMsg.textContent = 'Loading map...';
+      loadingMsg.classList.add('visible');
+      img.onload = function () {
+        loadingMsg.classList.remove('visible');
+        img.style.visibility = '';
+      };
+      img.src = `maps/${zone.map_file}`;
+      img.alt = `Map of ${zoneName}`;
+    } else {
+      // No map available
+      img.style.display = 'none';
+      loadingMsg.textContent = 'No map available for this zone';
+      loadingMsg.classList.add('visible');
+    }
 
     resetTransform();
 
@@ -567,9 +574,7 @@ async function init() {
           node.connectedEdges().addClass('highlighted');
           cy.elements().not(node).not(node.neighborhood().nodes()).not(node.connectedEdges()).addClass('dimmed');
           cy.animate({ center: { eles: node }, duration: 300 });
-          if (node.data('hasMap')) {
-            openLightbox(zoneName);
-          }
+          openLightbox(zoneName);
         }
       }
     }

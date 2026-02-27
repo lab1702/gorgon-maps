@@ -103,6 +103,7 @@ zone_to_map = {
     "Labyrinth": "Map_Labyrinth.png",
     "Myconian Cave": "Map_MyconianCave.png",
     "Rahu Sewer": "Map_RahuSewer.png",
+    "Ranalon Den": "Map_RanalonBase.png",
     "Serbule Sewers": "Map_SerbuleSewer.png",
     "Wolf Cave": "Map_WolfCave.png",
     "Yeti Cave": "Map_YetiCave.png",
@@ -118,7 +119,7 @@ zone_to_map = {
     "PvP Arena": "Map_PvPArena.png",
     "Puck Halls": "Map_PuckHalls.png",
     "Warden Cave": "Map_WardenCave.png",
-    "Spider Cave": "Map_SpiderCave.png",
+    "Serbule Hills Spider Cave": "Map_SpiderCave.png",
     "Aktaari Cave": "Map_PovusCaves_AktaariCave.png",
     "Elven Judgement": "Map_PovusCaves_ElvenJudgement.png",
     "Errruka's Cave": "Map_PovusCaves_ErrrukasCave.png",
@@ -129,7 +130,9 @@ zone_to_map = {
     "Molybdenum Mine": "Map_SunValeCave3.png",
     "Sacred Grotto": "Map_SnowbloodCave.png",
     "Statehelm Safehouse": "Map_StatehelmCaves_SafeHouseA.png",
-    "Fort Gazluk": "FortGazluk1.png",
+    "Anagoge Records Facility": "Map_NewbieIslandDungeon.png",
+    "Gazluk Keep": "FortGazluk1.png",
+    "War Caches": "Map_WarCache_Drug-1.png",
 }
 
 def parse_connections(raw):
