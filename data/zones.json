@@ -1,0 +1,506 @@
+{
+  "Anagoge Island": {
+    "connections": [
+      "Serbule"
+    ],
+    "map_file": "Map_AreaNewbieIsland.png",
+    "type": "overworld",
+    "levels": "1-10"
+  },
+  "Serbule": {
+    "connections": [
+      "Eltibule",
+      "Sun Vale",
+      "Serbule Hills",
+      "Anagoge Island"
+    ],
+    "map_file": "Map_AreaSerbule.png",
+    "type": "overworld",
+    "levels": "1-30"
+  },
+  "Serbule Hills": {
+    "connections": [
+      "Serbule"
+    ],
+    "map_file": "Map_AreaSerbule2.png",
+    "type": "overworld",
+    "levels": "1-25"
+  },
+  "Eltibule": {
+    "connections": [
+      "Serbule",
+      "Kur Mountains",
+      "Red Wing Casino"
+    ],
+    "map_file": "Map_AreaEltibule.png",
+    "type": "overworld",
+    "levels": "15-40"
+  },
+  "Sun Vale": {
+    "connections": [
+      "Serbule",
+      "Fae Realm"
+    ],
+    "map_file": "Map_AreaSunVale.png",
+    "type": "overworld",
+    "levels": "20-40"
+  },
+  "Kur Mountains": {
+    "connections": [
+      "Eltibule",
+      "Ilmari",
+      "Gazluk"
+    ],
+    "map_file": "Map_AreaKurMountains.png",
+    "type": "overworld",
+    "levels": "35-50"
+  },
+  "Ilmari": {
+    "connections": [
+      "Kur Mountains",
+      "Rahu"
+    ],
+    "map_file": "Map_AreaDesert1.png",
+    "type": "overworld",
+    "levels": "45-60"
+  },
+  "Rahu": {
+    "connections": [
+      "Ilmari",
+      "Povus",
+      "Red Wing Casino"
+    ],
+    "map_file": "Map_AreaRahu.png",
+    "type": "overworld",
+    "levels": "50-65"
+  },
+  "Red Wing Casino": {
+    "connections": [
+      "Eltibule",
+      "Rahu",
+      "Statehelm"
+    ],
+    "map_file": "Map_AreaCasino.png",
+    "type": "overworld",
+    "levels": "any"
+  },
+  "Gazluk": {
+    "connections": [
+      "Kur Mountains",
+      "Povus",
+      "Vidaria"
+    ],
+    "map_file": "Map_AreaGazluk.png",
+    "type": "overworld",
+    "levels": "70-75"
+  },
+  "Fae Realm": {
+    "connections": [
+      "Winter Nexus"
+    ],
+    "map_file": "Map_AreaFaeRealm1.png",
+    "type": "overworld",
+    "levels": "70-80"
+  },
+  "Povus": {
+    "connections": [
+      "Rahu",
+      "Gazluk",
+      "Vidaria"
+    ],
+    "map_file": "Map_Povus.png",
+    "type": "overworld",
+    "levels": "75-85"
+  },
+  "Vidaria": {
+    "connections": [
+      "Povus",
+      "Gazluk",
+      "Statehelm"
+    ],
+    "map_file": "Map_Vidaria.png",
+    "type": "overworld",
+    "levels": "90-95"
+  },
+  "Statehelm": {
+    "connections": [
+      "Vidaria",
+      "Red Wing Casino"
+    ],
+    "map_file": "Map_AreaStatehelm.png",
+    "type": "overworld",
+    "levels": "80-100"
+  },
+  "Phantom Ilmari Desert": {
+    "connections": [
+      "Serbule"
+    ],
+    "map_file": "Map_AreaDesert1.png",
+    "type": "overworld",
+    "levels": "1-25"
+  },
+  "Anagoge Records Facility": {
+    "connections": [
+      "Anagoge Island",
+      "Serbule Hills Spider Cave"
+    ],
+    "map_file": null,
+    "type": "dungeon",
+    "levels": "1-10"
+  },
+  "Animal Nexus": {
+    "connections": [
+      "Eltibule"
+    ],
+    "map_file": "Map_AnimalNexus.png",
+    "type": "dungeon",
+    "levels": "15-40"
+  },
+  "Boarded up Basement": {
+    "connections": [
+      "Eltibule"
+    ],
+    "map_file": "Map_BoardedUpBasement.png",
+    "type": "dungeon",
+    "levels": "15-40"
+  },
+  "Borghild": {
+    "connections": [
+      "Serbule"
+    ],
+    "map_file": "Map_Borghild.png",
+    "type": "dungeon",
+    "levels": "1-30"
+  },
+  "Brain Bug Cave": {
+    "connections": [
+      "Serbule"
+    ],
+    "map_file": "Map_BrainBugCave.png",
+    "type": "dungeon",
+    "levels": "1-30"
+  },
+  "Carpal Tunnels": {
+    "connections": [
+      "Serbule"
+    ],
+    "map_file": "Map_CarpalTunnels.png",
+    "type": "dungeon",
+    "levels": "1-30"
+  },
+  "Crystal Cavern": {
+    "connections": [
+      "Serbule"
+    ],
+    "map_file": "Map_CrystalCavern.png",
+    "type": "dungeon",
+    "levels": "1-30"
+  },
+  "Dark Chapel": {
+    "connections": [
+      "Eltibule"
+    ],
+    "map_file": "Map_DarkChapel.png",
+    "type": "dungeon",
+    "levels": "15-40"
+  },
+  "Eltibule Crypt": {
+    "connections": [
+      "Eltibule"
+    ],
+    "map_file": "Map_EltibuleCrypt.png",
+    "type": "dungeon",
+    "levels": "15-40"
+  },
+  "Goblin Dungeon": {
+    "connections": [
+      "Eltibule"
+    ],
+    "map_file": "Map_GoblinDungeon.png",
+    "type": "dungeon",
+    "levels": "15-40"
+  },
+  "Hogan's Basement": {
+    "connections": [
+      "Eltibule"
+    ],
+    "map_file": "Map_HogansKeepBasement.png",
+    "type": "dungeon",
+    "levels": "15-40"
+  },
+  "Kur Tower": {
+    "connections": [
+      "Kur Mountains",
+      "Necromancer's Courtyard"
+    ],
+    "map_file": "Map_KurTower.png",
+    "type": "dungeon",
+    "levels": "35-50"
+  },
+  "Labyrinth": {
+    "connections": [
+      "Ilmari"
+    ],
+    "map_file": "Map_Labyrinth.png",
+    "type": "dungeon",
+    "levels": "45-60"
+  },
+  "Myconian Cave": {
+    "connections": [
+      "Serbule"
+    ],
+    "map_file": "Map_MyconianCave.png",
+    "type": "dungeon",
+    "levels": "1-30"
+  },
+  "Rahu Sewer": {
+    "connections": [
+      "Rahu"
+    ],
+    "map_file": "Map_RahuSewer.png",
+    "type": "dungeon",
+    "levels": "50-65"
+  },
+  "Ranalon Den": {
+    "connections": [
+      "Serbule Hills"
+    ],
+    "map_file": null,
+    "type": "dungeon",
+    "levels": "1-25"
+  },
+  "Serbule Crypt": {
+    "connections": [
+      "Serbule",
+      "Serbule Sewers"
+    ],
+    "map_file": null,
+    "type": "dungeon",
+    "levels": "1-30"
+  },
+  "Serbule Sewers": {
+    "connections": [
+      "Serbule",
+      "Serbule Crypt"
+    ],
+    "map_file": "Map_SerbuleSewer.png",
+    "type": "dungeon",
+    "levels": "1-30"
+  },
+  "Serbule Hills Spider Cave": {
+    "connections": [
+      "Anagoge Records Facility",
+      "Serbule Hills"
+    ],
+    "map_file": null,
+    "type": "dungeon",
+    "levels": "1-25"
+  },
+  "The Wintertide": {
+    "connections": [
+      "Fae Realm"
+    ],
+    "map_file": "Map_TheWintertide.png",
+    "type": "dungeon",
+    "levels": "70-80"
+  },
+  "Wolf Cave": {
+    "connections": [
+      "Kur Mountains"
+    ],
+    "map_file": "Map_WolfCave.png",
+    "type": "dungeon",
+    "levels": "35-50"
+  },
+  "Yeti Cave": {
+    "connections": [
+      "Kur Mountains"
+    ],
+    "map_file": "Map_YetiCave.png",
+    "type": "dungeon",
+    "levels": "35-50"
+  },
+  "Winter Nexus": {
+    "connections": [
+      "Sun Vale",
+      "Fae Realm"
+    ],
+    "map_file": "Map_WinterNexus.png",
+    "type": "dungeon",
+    "levels": "20-40"
+  },
+  "Gazluk Keep": {
+    "connections": [
+      "Gazluk"
+    ],
+    "map_file": null,
+    "type": "dungeon",
+    "levels": "70-75"
+  },
+  "Gazluk Shadow Cave": {
+    "connections": [
+      "Gazluk"
+    ],
+    "map_file": null,
+    "type": "dungeon",
+    "levels": "70-75"
+  },
+  "No-Name Cave": {
+    "connections": [
+      "Gazluk"
+    ],
+    "map_file": "Map_NoNameCave.png",
+    "type": "dungeon",
+    "levels": "70-75"
+  },
+  "New Prestonbule Cave": {
+    "connections": [
+      "Gazluk"
+    ],
+    "map_file": "Map_NewPrestonbule.png",
+    "type": "dungeon",
+    "levels": "70-75"
+  },
+  "Snowblood Shadow Cave": {
+    "connections": [
+      "Gazluk"
+    ],
+    "map_file": "Map_SnowbloodCave.png",
+    "type": "dungeon",
+    "levels": "70-75"
+  },
+  "Windy View Cave": {
+    "connections": [
+      "Gazluk"
+    ],
+    "map_file": "Map_WindyViewCave.png",
+    "type": "dungeon",
+    "levels": "70-75"
+  },
+  "Underwater Cave": {
+    "connections": [
+      "Sun Vale",
+      "Animal Nexus"
+    ],
+    "map_file": null,
+    "type": "dungeon",
+    "levels": "20-40"
+  },
+  "War Caches": {
+    "connections": [
+      "Ilmari"
+    ],
+    "map_file": null,
+    "type": "dungeon",
+    "levels": "45-60"
+  },
+  "Aktaari Cave": {
+    "connections": [
+      "Errruka's Cave"
+    ],
+    "map_file": "Map_PovusCaves_AktaariCave.png",
+    "type": "dungeon",
+    "levels": "75-85"
+  },
+  "Elven Judgement": {
+    "connections": [
+      "Nightmare Caves"
+    ],
+    "map_file": "Map_PovusCaves_ElvenJudgement.png",
+    "type": "dungeon",
+    "levels": "75-85"
+  },
+  "Errruka's Cave": {
+    "connections": [
+      "Povus",
+      "Aktaari Cave",
+      "Forthragarian Caves"
+    ],
+    "map_file": "Map_PovusCaves_ErrrukasCave.png",
+    "type": "dungeon",
+    "levels": "75-85"
+  },
+  "Forthragarian Caves": {
+    "connections": [
+      "Errruka's Cave",
+      "Nightmare Caves"
+    ],
+    "map_file": "Map_PovusCaves_ForthragarianCaves.png",
+    "type": "dungeon",
+    "levels": "75-85"
+  },
+  "Nightmare Caves": {
+    "connections": [
+      "Forthragarian Caves",
+      "Elven Judgement"
+    ],
+    "map_file": "Map_PovusCaves_NightmareCaves.png",
+    "type": "dungeon",
+    "levels": "75-85"
+  },
+  "Fungal Fortress": {
+    "connections": [
+      "Povus"
+    ],
+    "map_file": null,
+    "type": "dungeon",
+    "levels": "75-85"
+  },
+  "Necromancer's Courtyard": {
+    "connections": [
+      "Kur Tower"
+    ],
+    "map_file": "Map_KurCourtyard.png",
+    "type": "dungeon",
+    "levels": "35-50"
+  },
+  "Fish Bowl Cavern": {
+    "connections": [
+      "Sun Vale"
+    ],
+    "map_file": "Map_SunValeCave2.png",
+    "type": "dungeon",
+    "levels": "20-40"
+  },
+  "Sacred Grotto": {
+    "connections": [
+      "Kur Mountains"
+    ],
+    "map_file": "Map_SnowbloodCave.png",
+    "type": "dungeon",
+    "levels": "35-50"
+  },
+  "Sacrificial Sea Cave": {
+    "connections": [
+      "Sun Vale"
+    ],
+    "map_file": "Map_SunValeCave1.png",
+    "type": "dungeon",
+    "levels": "20-40"
+  },
+  "Amaluk Valley Cave": {
+    "connections": [
+      "Gazluk",
+      "Fae Realm"
+    ],
+    "map_file": null,
+    "type": "dungeon",
+    "levels": "70-75"
+  },
+  "Molybdenum Mine": {
+    "connections": [
+      "Sun Vale"
+    ],
+    "map_file": "Map_SunValeCave3.png",
+    "type": "dungeon",
+    "levels": "20-40"
+  },
+  "Warden Cave": {
+    "connections": [
+      "Kur Mountains"
+    ],
+    "map_file": "Map_WardenCave.png",
+    "type": "dungeon",
+    "levels": "35-50"
+  }
+}
