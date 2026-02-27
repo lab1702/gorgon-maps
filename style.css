@@ -33,7 +33,7 @@ body {
 #lightbox {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 1);
   display: none;
   z-index: 200;
   flex-direction: column;
