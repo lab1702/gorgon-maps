@@ -112,6 +112,17 @@ body {
   cursor: grabbing;
 }
 
+.lightbox-loading {
+  position: absolute;
+  color: #aaa;
+  font-size: 18px;
+  display: none;
+}
+
+.lightbox-loading.visible {
+  display: block;
+}
+
 .lightbox-body img {
   max-width: 95vw;
   max-height: 88vh;

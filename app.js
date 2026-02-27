@@ -319,6 +319,7 @@ function setupLightbox(cy, zones) {
   const levelsSpan = lightbox.querySelector('.lightbox-header .levels');
   const closeBtn = lightbox.querySelector('.close-btn');
   const body = lightbox.querySelector('.lightbox-body');
+  const loadingMsg = body.querySelector('.lightbox-loading');
   const img = body.querySelector('img');
   // Zoom/pan state
   let scale = 1;
@@ -349,9 +350,11 @@ function setupLightbox(cy, zones) {
     headerH2.textContent = zoneName;
     levelsSpan.textContent = `Levels: ${zone.levels}`;
 
-    // Hide old image immediately to prevent flash of previous map
+    // Hide old image and show loading message until new map loads
     img.style.visibility = 'hidden';
+    loadingMsg.classList.add('visible');
     img.onload = function () {
+      loadingMsg.classList.remove('visible');
       img.style.visibility = '';
     };
     img.src = `maps/${zone.map_file}`;
