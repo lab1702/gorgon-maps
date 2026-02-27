@@ -89,10 +89,12 @@ const graphStyle = [
       'label': 'data(label)',
       'text-valign': 'bottom',
       'text-margin-y': 8,
-      'font-size': 12,
+      'font-size': 14,
       'color': '#d0d0d0',
       'text-outline-color': '#1a1a2e',
       'text-outline-width': 2,
+      'text-wrap': 'wrap',
+      'text-max-width': 80,
       'width': 50,
       'height': 50,
       'shape': 'ellipse',
@@ -107,10 +109,12 @@ const graphStyle = [
       'label': 'data(label)',
       'text-valign': 'bottom',
       'text-margin-y': 6,
-      'font-size': 10,
+      'font-size': 11,
       'color': '#999',
       'text-outline-color': '#1a1a2e',
       'text-outline-width': 2,
+      'text-wrap': 'wrap',
+      'text-max-width': 60,
       'width': 30,
       'height': 30,
       'shape': 'round-rectangle',
@@ -630,15 +634,17 @@ async function init() {
     if (loadingEl) {
       loadingEl.remove();
     }
+    cy.fit(undefined, 40);
   });
 
   // Run dagre layout now that the layoutstop listener is registered
   cy.layout({
     name: 'dagre',
     rankDir: 'TB',
-    nodeSep: 60,
-    rankSep: 80,
+    nodeSep: 50,
+    rankSep: 100,
     edgeSep: 20,
+    ranker: 'tight-tree',
     sort: function (a, b) {
       return (a.data('rank') || 0) - (b.data('rank') || 0);
     }
