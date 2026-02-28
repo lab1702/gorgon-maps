@@ -142,33 +142,44 @@ def parse_connections(raw):
     return [m.group(1) for m in re.finditer(r'\[\[([^\]|]+?)(?:\|[^\]]+)?\]\]', raw)]
 
 
-# Build graph
-graph = {}
+# Load existing zones.json (preserves levels and other hand-edited fields)
+zones_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "zones.json")
+with open(zones_path) as f:
+    zones = json.load(f)
+
+# Update connections and map_file from build data
+overworld_zones = {
+    "Anagoge Island", "Serbule", "Serbule Hills", "Eltibule",
+    "Sun Vale", "Kur Mountains", "Ilmari", "Rahu",
+    "Red Wing Casino", "Gazluk", "Fae Realm", "Povus",
+    "Vidaria", "Statehelm", "Phantom Ilmari Desert"
+}
+
 for zone, raw in raw_connections.items():
     connections = parse_connections(raw)
     map_file = zone_to_map.get(zone)
-    graph[zone] = {
-        "connections": connections,
-        "map_file": map_file,
-        "type": "overworld" if zone in [
-            "Anagoge Island", "Serbule", "Serbule Hills", "Eltibule",
-            "Sun Vale", "Kur Mountains", "Ilmari", "Rahu",
-            "Red Wing Casino", "Gazluk", "Fae Realm", "Povus",
-            "Vidaria", "Statehelm", "Phantom Ilmari Desert"
-        ] else "dungeon"
-    }
+    if zone in zones:
+        zones[zone]["connections"] = connections
+        zones[zone]["map_file"] = map_file
+        zones[zone]["type"] = "overworld" if zone in overworld_zones else "dungeon"
+    else:
+        zones[zone] = {
+            "connections": connections,
+            "map_file": map_file,
+            "type": "overworld" if zone in overworld_zones else "dungeon"
+        }
 
-# Write output
-output_path = "/home/lab/tmp/gorgon-maps/zone_connections.json"
-with open(output_path, "w") as f:
-    json.dump(graph, f, indent=2)
+# Write back to zones.json
+with open(zones_path, "w") as f:
+    json.dump(zones, f, indent=2)
+    f.write("\n")
 
-print(f"Wrote {len(graph)} zones to {output_path}")
+print(f"Updated {len(zones)} zones in {zones_path}")
 print()
 
 # Print summary
 print("=== OVERWORLD ZONE GRAPH ===")
-for zone, data in sorted(graph.items()):
+for zone, data in sorted(zones.items()):
     if data["type"] == "overworld":
         conns = ", ".join(data["connections"])
         map_status = "has map" if data["map_file"] else "NO MAP"
@@ -176,7 +187,7 @@ for zone, data in sorted(graph.items()):
 
 print()
 print("=== DUNGEON CONNECTIONS ===")
-for zone, data in sorted(graph.items()):
+for zone, data in sorted(zones.items()):
     if data["type"] == "dungeon":
         conns = ", ".join(data["connections"])
         map_status = "has map" if data["map_file"] else "NO MAP"
