@@ -114,7 +114,7 @@ zone_to_map = {
     "Windy View Cave": "Map_WindyViewCave.png",
     "The Wintertide": "Map_TheWintertide.png",
     "Necromancer's Courtyard": "Map_KurCourtyard.png",
-    "Khyrulek's Crypt": "Map_KhyruleksCrypt.png",
+    "Serbule Crypt": "Map_KhyruleksCrypt.png",
     "Tower View Cave": "Map_TowerView.png",
     "PvP Arena": "Map_PvPArena.png",
     "Puck Halls": "Map_PuckHalls.png",
