@@ -276,7 +276,7 @@
       "Serbule",
       "Serbule Sewers"
     ],
-    "map_file": null,
+    "map_file": "Map_KhyruleksCrypt.png",
     "type": "dungeon",
     "levels": "1-30"
   },
