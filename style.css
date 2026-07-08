@@ -1,9 +1,42 @@
+/* lab1702 design system — terminal phosphor. Tokens copied from the
+   lab1702 skill (colors/type/spacing/effects); app is dependency-free CSS. */
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap");
+
+:root {
+  --bg-0: oklch(0.15 0.010 100);
+  --bg-1: oklch(0.18 0.012 100);
+  --bg-2: oklch(0.22 0.014 100);
+  --fg-1: oklch(0.92 0.020 95);
+  --fg-2: oklch(0.70 0.020 95);
+  --fg-3: oklch(0.52 0.018 95);
+  --amber: oklch(0.80 0.16 75);
+  --danger: oklch(0.70 0.16 25);
+  --border-1: oklch(0.32 0.018 100);
+  --border-2: oklch(0.42 0.020 100);
+
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-sans: "IBM Plex Sans", -apple-system, "Segoe UI", Helvetica, sans-serif;
+  --tracking-label: 0.08em;
+
+  --radius-1: 2px;
+  --radius-2: 4px;
+  --shadow-card: 0 1px 0 oklch(0 0 0 / 0.4), 0 4px 16px oklch(0 0 0 / 0.35);
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);
+  --dur-fast: 120ms;
+}
+
 body {
   margin: 0;
   overflow: hidden;
-  background: #1a1a2e;
-  color: #e0e0e0;
-  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg-0);
+  color: var(--fg-1);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+::selection {
+  background: oklch(0.80 0.16 75 / 0.25);
 }
 
 #title {
@@ -11,12 +44,15 @@ body {
   top: 16px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 20px;
+  font-family: var(--font-mono);
+  font-size: 16px;
   font-weight: 600;
-  color: #d0d0d0;
+  text-transform: lowercase;
+  letter-spacing: var(--tracking-label);
+  color: var(--fg-1);
   z-index: 90;
   pointer-events: none;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 1px 4px oklch(0 0 0 / 0.8);
 }
 
 #cy {
@@ -27,16 +63,29 @@ body {
 
 #tooltip {
   position: absolute;
-  background: rgba(20, 20, 40, 0.95);
-  border: 1px solid #3a3a5c;
-  border-radius: 8px;
-  padding: 10px 14px;
+  background: var(--bg-1);
+  border: 1px solid var(--border-1);
+  border-radius: var(--radius-2);
+  box-shadow: var(--shadow-card);
+  padding: 8px 12px;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.15s;
+  transition: opacity var(--dur-fast) var(--ease-out);
   z-index: 100;
   max-width: 220px;
-  font-size: 13px;
+  font-size: 12.5px;
+  color: var(--fg-2);
+}
+
+#tooltip strong {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--fg-1);
+}
+
+#tooltip em {
+  font-style: normal;
+  color: var(--fg-3);
 }
 
 #tooltip.visible {
@@ -46,7 +95,7 @@ body {
 #lightbox {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 1);
+  background: var(--bg-0);
   display: none;
   z-index: 200;
   flex-direction: column;
@@ -65,36 +114,53 @@ body {
   padding: 16px 24px;
   width: 100%;
   box-sizing: border-box;
+  border-bottom: 1px solid var(--border-1);
 }
 
 .lightbox-header h2 {
   margin: 0;
-  font-size: 24px;
-  color: #f0f0f0;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--fg-1);
 }
 
 .lightbox-header .levels {
-  color: #aaa;
-  font-size: 14px;
+  font-family: var(--font-mono);
+  color: var(--fg-2);
+  font-size: 12.5px;
 }
 
 .lightbox-header .close-hint {
   margin-left: auto;
+  font-family: var(--font-mono);
   font-size: 11px;
-  color: #8c8c8c;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-label);
+  color: var(--fg-2);
 }
 
 .lightbox-header .close-btn {
   background: none;
-  border: none;
-  color: #888;
-  font-size: 28px;
+  border: 1px solid var(--border-1);
+  border-radius: var(--radius-1);
+  color: var(--fg-2);
+  font-size: 20px;
+  width: 28px;
+  height: 28px;
   cursor: pointer;
   line-height: 1;
+  transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
 }
 
 .lightbox-header .close-btn:hover {
-  color: #fff;
+  color: var(--fg-1);
+  border-color: var(--border-2);
+}
+
+.lightbox-header .close-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--bg-0), 0 0 0 3px var(--amber);
 }
 
 .lightbox-body {
@@ -117,8 +183,9 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: #aaa;
-  font-size: 18px;
+  font-family: var(--font-mono);
+  color: var(--fg-2);
+  font-size: 14px;
   display: none;
   z-index: 1;
 }
@@ -142,10 +209,22 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 24px;
-  color: #aaa;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--fg-2);
   z-index: 50;
   pointer-events: none;
+}
+
+#loading::after {
+  content: "▊";
+  color: var(--amber);
+  margin-left: 4px;
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
 }
 
 /* Legend */
@@ -153,9 +232,10 @@ body {
   position: fixed;
   top: 16px;
   left: 16px;
-  background: rgba(20, 20, 40, 0.85);
-  border: 1px solid #3a3a5c;
-  border-radius: 8px;
+  background: var(--bg-1);
+  border: 1px solid var(--border-1);
+  border-radius: var(--radius-2);
+  box-shadow: var(--shadow-card);
   padding: 12px 16px;
   z-index: 90;
   font-size: 12px;
@@ -164,52 +244,56 @@ body {
 }
 
 .legend-title {
+  font-family: var(--font-mono);
   font-weight: 600;
-  font-size: 13px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-label);
   margin-bottom: 6px;
-  color: #d0d0d0;
+  color: var(--fg-2);
 }
 
 .legend-item {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #bbb;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg-2);
 }
 
 .legend-circle {
   display: inline-block;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
   flex-shrink: 0;
 }
 
 .legend-shape {
   display: inline-block;
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   flex-shrink: 0;
-  border: 2px solid #888;
+  border: 1.5px solid var(--fg-3);
   box-sizing: border-box;
 }
 
 .legend-circle-shape {
-  border-radius: 50%;
+  border-radius: 999px;
 }
 
 .legend-square-shape {
-  border-radius: 3px;
+  border-radius: var(--radius-1);
 }
 
 .legend-separator {
-  border-top: 1px solid #3a3a5c;
+  border-top: 1px solid var(--border-1);
   margin: 6px 0;
 }
 
 .legend-hint {
-  color: #888;
-  font-style: italic;
+  color: var(--fg-3);
   font-size: 11px;
 }
 
@@ -221,7 +305,7 @@ body {
   }
 
   .lightbox-header h2 {
-    font-size: 18px;
+    font-size: 16px;
   }
 
   .lightbox-header {
@@ -229,14 +313,9 @@ body {
   }
 
   #legend {
-    font-size: 11px;
     padding: 8px 12px;
     top: 8px;
     left: 8px;
     min-width: 120px;
-  }
-
-  .legend-title {
-    font-size: 12px;
   }
 }

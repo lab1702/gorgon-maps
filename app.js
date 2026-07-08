@@ -4,15 +4,16 @@
  * Compute node color based on the minimum level parsed from the levels string.
  */
 function getLevelColor(levels) {
-  if (levels === 'any') return '#5a8ab3';
+  // Hex equivalents of oklch level-ramp tokens (canvas can't use CSS vars)
+  if (levels === 'any') return '#6c9ab0';
   const minLevel = parseInt(levels.split('-')[0], 10);
-  if (isNaN(minLevel)) return '#5a8ab3';
-  if (minLevel <= 10) return '#4a9e4a';
-  if (minLevel <= 25) return '#5ab35a';
-  if (minLevel <= 40) return '#c4a83c';
-  if (minLevel <= 60) return '#d4853c';
-  if (minLevel <= 75) return '#c45a5a';
-  return '#8a5ab3';
+  if (isNaN(minLevel)) return '#6c9ab0';
+  if (minLevel <= 10) return '#6dba70';
+  if (minLevel <= 25) return '#b6b84d';
+  if (minLevel <= 40) return '#e4a339';
+  if (minLevel <= 60) return '#e28247';
+  if (minLevel <= 75) return '#d46660';
+  return '#9c70bc';
 }
 
 /**
@@ -89,9 +90,10 @@ const graphStyle = [
       'label': 'data(label)',
       'text-valign': 'bottom',
       'text-margin-y': 8,
-      'font-size': 14,
-      'color': '#d0d0d0',
-      'text-outline-color': '#1a1a2e',
+      'font-family': 'JetBrains Mono, monospace',
+      'font-size': 13,
+      'color': '#e8e5d6',
+      'text-outline-color': '#0c0b07',
       'text-outline-width': 2,
       'text-wrap': 'wrap',
       'text-max-width': 80,
@@ -100,7 +102,8 @@ const graphStyle = [
       'shape': 'ellipse',
       'background-color': 'data(color)',
       'border-width': 2,
-      'border-color': '#ffffff30'
+      'border-color': '#e8e5d6',
+      'border-opacity': 0.19
     }
   },
   {
@@ -109,9 +112,10 @@ const graphStyle = [
       'label': 'data(label)',
       'text-valign': 'bottom',
       'text-margin-y': 6,
-      'font-size': 11,
-      'color': '#999',
-      'text-outline-color': '#1a1a2e',
+      'font-family': 'JetBrains Mono, monospace',
+      'font-size': 10,
+      'color': '#a29f91',
+      'text-outline-color': '#0c0b07',
       'text-outline-width': 2,
       'text-wrap': 'wrap',
       'text-max-width': 60,
@@ -121,14 +125,15 @@ const graphStyle = [
       'background-color': 'data(color)',
       'background-opacity': 0.6,
       'border-width': 1,
-      'border-color': '#ffffff20'
+      'border-color': '#e8e5d6',
+      'border-opacity': 0.125
     }
   },
   {
     selector: 'edge[edgeType="overworld"]',
     style: {
       'width': 3,
-      'line-color': '#4a4a6a',
+      'line-color': '#4f4d41',
       'curve-style': 'bezier',
       'target-arrow-shape': 'none'
     }
@@ -137,7 +142,7 @@ const graphStyle = [
     selector: 'edge[edgeType="dungeon"]',
     style: {
       'width': 1.5,
-      'line-color': '#3a3a5a',
+      'line-color': '#353329',
       'line-style': 'dashed',
       'curve-style': 'bezier',
       'target-arrow-shape': 'none'
@@ -147,14 +152,16 @@ const graphStyle = [
     selector: 'node.highlighted',
     style: {
       'border-width': 3,
-      'border-color': '#ffd700',
+      'border-color': '#f9ad26',
+      'border-opacity': 1,
       'z-index': 10
     }
   },
   {
     selector: 'node.neighbor',
     style: {
-      'border-color': '#ffd70080',
+      'border-color': '#f9ad26',
+      'border-opacity': 0.5,
       'z-index': 9
     }
   },
@@ -167,7 +174,7 @@ const graphStyle = [
   {
     selector: 'edge.highlighted',
     style: {
-      'line-color': '#ffd700',
+      'line-color': '#f9ad26',
       'width': 3,
       'z-index': 10
     }
@@ -533,7 +540,7 @@ async function init() {
     const loadingEl = document.getElementById('loading');
     if (loadingEl) {
       loadingEl.textContent = 'Failed to load zone data. Try refreshing the page.';
-      loadingEl.style.color = '#c45a5a';
+      loadingEl.style.color = '#f2716a';
     }
     console.error('Failed to load zone data:', err);
     return;
